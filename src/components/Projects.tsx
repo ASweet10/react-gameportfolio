@@ -1,31 +1,35 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import placeholder from '/steak.jpg'
+import React, { useState } from 'react'
 import { FaGithub } from "react-icons/fa"
 import { FaDiamond } from "react-icons/fa6"
 import uatanks from "../resources/uatanks-2.png"
-import lavaEscape from "../resources/lavaescape-2.png"
+import lavaEscape1 from "../resources/lavaescape-1.png"
+import lavaEscape2 from "../resources/lavaescape-2.png"
 import juggling from "../resources/soccer-1.jpg"
 import thief from "../resources/thief-1.png"
+import { MdClose } from "react-icons/md"
 
 const Projects = () => {
 
-  const projects: 
+    const [ showPanel, setShowPanel ] = useState(false)
+    const [ currentProjectIndex, setCurrentProjectIndex ] = useState(0)
+    const projects: 
     { 
         id: number,
-        link: string,
         github: string,
         name: string,
-        image: string,
+        isMobile: boolean,
+        imageOne: string,
+        imageTwo: string,
         tools: string[],
         bulletPoints: string[]
     }[] = [
         {
             id: 0,
-            link: "/schooljams",
-            github: "https://github.com/ASweet10/Games/tree/main",
+            github: "https://github.com/ASweet10/Games/tree/main/AI-Tanks",
             name: "AI Tanks",
-            image: uatanks,
+            isMobile: false,
+            imageOne: uatanks,
+            imageTwo: uatanks,
             tools: [
                 "Unity",
                 "C#",
@@ -39,10 +43,11 @@ const Projects = () => {
         },
         {
             id: 1,
-            link: "/",
             github: "https://github.com/ASweet10/Games",
             name: "Horror Game WIP",
-            image: placeholder,
+            isMobile: false,
+            imageOne: thief,
+            imageTwo: thief,
             tools: [
                 "Unity",
                 "C#",
@@ -54,10 +59,11 @@ const Projects = () => {
         },
         {
             id: 2,
-            link: "/btdemo",
             github: "https://github.com/ASweet10/Games/tree/main/Demo-BehaviorTree",
             name: "Behavior Tree Demo",
-            image: placeholder,
+            isMobile: false,
+            imageOne: thief,
+            imageTwo: thief,
             tools: [
                 "Unity",
                 "C#",
@@ -67,43 +73,30 @@ const Projects = () => {
                 "",
             ]
         },
-    ]
-
-    const personalProjects: 
-    { 
-        id: number,
-        link: string,
-        github: string,
-        hasCode: boolean,
-        name: string,
-        image: string,
-        tools: string[],
-        bulletPoints: string[]
-    }[] = [
         {
-            id: 0,
-            link: "/backyardjuggling",
+            id: 3,
             github: "https://github.com/ASweet10/Games/tree/main/BackyardJuggling",
-            hasCode: true,
             name: "Backyard Juggling",
-            image: juggling,
+            isMobile: true,
+            imageOne: juggling,
+            imageTwo: juggling,
             tools: [
                 "Unity",
                 "C#",
             ],
             bulletPoints: [
-                "Android soccer juggling game",
-                "Learned mobile dev fundamentals",
-                "Resolutions, scaling, save/load permissions, etc.",
+                "Mobile development testing with Android Studio",
+                "Saving/Loading, file permission considerations",
+                "Optimizing assets for all resolutions",
             ]
         },
         {
-            id: 1,
-            link: "/schooljams",
+            id: 4,
             github: "",
-            hasCode: false,
             name: "Lava Escape",
-            image: lavaEscape,
+            isMobile: false,
+            imageOne: thief,
+            imageTwo: thief,
             tools: [
                 "Unreal",
                 "Blueprints"
@@ -115,12 +108,12 @@ const Projects = () => {
             ]
         },
         {
-            id: 2,
-            link: "/schooljams",
+            id: 5,
             github: "https://github.com/ASweet10/Games/tree/main/WeeklyJam235_Bandit",
-            hasCode: true,
             name: "Thief in the Night",
-            image: thief,
+            isMobile: false,
+            imageOne: thief,
+            imageTwo: thief,
             tools: [
                 "Unity",
                 "C#",
@@ -135,74 +128,77 @@ const Projects = () => {
 
   return (
     <section className='w-full h-full pt-48'>
-        <div className='mx-4'>
-            <h1 className='h-full w-full text-5xl font-semibold text-white text-center pb-20'>AI Projects</h1>
-            <div className='flex flex-col md:flex-row gap-20 justify-center'>
+        <div className={`${showPanel ? "opacity-40" : "opacity-100"}`}>
+            <div className='grid grid-cols-1 md:grid-cols-3 justify-center mx-8 md:mx-64'>
                 { projects.map((project) => {
                     return (
                         <div key={project.id} className='max-w-[450px]'>
-                            <Link to={project.link} className='flex justify-center items-center'>
-                                <img src={project.image} alt="" className='hover:scale-105 transition-all duration-200 rounded-lg hover:border-2 h-80'/>
-                            </Link>
-
-                            <h1 className='text-3xl text-white text-center font-semibold py-4'>{project.name}</h1>
-                            <div className='mx-4'>
-                                { project.bulletPoints.map((bulletPoint, i) => {
-                                    return (
-                                        <div key={i} className='flex gap-2 items-center'>
-                                            <FaDiamond className='text-xs text-white'/>
-                                            <p className='text-white font-medium'>{bulletPoint}</p>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-
-                            <div className='w-full flex justify-center items-center my-4'>
-                                <a href={project.github} className='bg-gray-700 rounded-lg h-12 w-20 flex justify-center items-center'>
-                                    <FaGithub className='text-4xl text-white text-center'/>
-                                </a>
-                            </div>
-
+                            <img src={project.imageOne} alt="" onClick={() => {setShowPanel(true); setCurrentProjectIndex(project.id)}}
+                                className='hover:scale-105 transition-all duration-200 rounded-lg hover:cursor-pointer min-h-60 min-w-96' 
+                            />
                         </div>
                     )
                 })}
             </div>
-
-            <div className='pt-12'>
-                <h1 className='h-full w-full text-5xl font-semibold text-white text-center pb-20'>School & Game Jams</h1>
-                <div className='flex flex-col md:flex-row gap-20 justify-center'>
-                    { personalProjects.map((project) => {
-                        return (
-                            <div key={project.id} className='max-w-[450px]'>
-                                <Link to={project.link} className='flex justify-center items-center'>
-                                    <img src={project.image} alt="" className='hover:scale-105 transition-all duration-200 rounded-lg hover:border-2 h-80'/>
-                                </Link>
-
-                                <h1 className='text-3xl text-white text-center font-semibold py-4'>{project.name}</h1>
-                                <div className='mx-4 my-6'>
-                                    { project.bulletPoints.map((bulletPoint, i) => {
-                                        return (
-                                            <div key={i} className='flex gap-2 items-center'>
-                                                <FaDiamond className='text-xs text-white'/>
-                                                <p className='text-white font-medium'>{bulletPoint}</p>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-
-                                { project.hasCode && (
-                                    <div className='w-full flex justify-center items-center mb-4'>
-                                        <a href={project.github} className='bg-gray-700 rounded-lg h-12 w-20 flex justify-center items-center'>
-                                            <FaGithub className='text-4xl text-white text-center'/>
-                                        </a>
-                                    </div>
-                                )}
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
         </div>
+
+        {/* Full-screen panel */}
+        { showPanel && (
+            <div className='fixed top-2 left-1/4 h-[100vh] w-[50vw] bg-blue-950 rounded-lg justify-center overflow-auto pb-10'>
+                <MdClose onClick={() => setShowPanel(false)} className='text-white hover:text-red-600 hover:cursor-pointer text-5xl absolute top-5 right-5'/>
+
+                <div className='flex flex-col'>
+                    <div className='flex flex-row justify-center items-center gap-4 pt-12 pb-4'>
+                    <h1 className='text-4xl text-white text-center font-bold'>{projects[currentProjectIndex].name}</h1>
+
+                    <div className='text-center flex flex-row justify-center items-center gap-2'>
+                        <p className='text-white text-4xl'>(</p>
+                        { projects[currentProjectIndex].tools.map((tool, i) => {
+                            return (
+                                <p key={i} className='text-white text-4xl font-medium'>
+                                    {tool}
+                                    {i !== projects[currentProjectIndex].tools.length - 1 && ", "}
+                                </p>
+                            )
+                        })}
+                        <p className='text-white text-4xl'>)</p>
+                    </div>
+                </div>
+                    <a target="_blank" href={projects[currentProjectIndex].github} className='flex flex-row items-center justify-center pb-6 text-white text-2xl gap-2'>
+                        Source
+                        <FaGithub className='text-gray-500'/>
+                    </a>
+                </div>
+
+
+
+                
+                <div className='flex justify-center'>
+                    <img src={projects[currentProjectIndex].imageOne} alt="" className="h-80"/>
+                </div>
+
+                
+                <div className='my-6 border-blue-500 border-t-8 border-b-8'>
+                    <h1 className='text-4xl text-blue-500 text-left font-bold py-8 px-12'>Highlights</h1>   
+                    <div className='flex flex-col gap-4 pb-8'>
+                        { projects[currentProjectIndex].bulletPoints.map((bulletPoint, i) => {
+                            return (    
+                                <div key={i} className='flex gap-3 items-center px-12'>
+                                    <FaDiamond className='text-xs text-blue-500'/>
+                                    <p className='text-white font-medium'>{bulletPoint}</p>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                </div>
+
+                <div className='flex justify-center'>
+                    <img src={projects[currentProjectIndex].imageTwo} alt="" className="h-80"/>
+                </div>
+
+            </div>
+        )}
     </section>
   )
 }
